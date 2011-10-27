@@ -50,8 +50,13 @@ class Bundle extends \Evolution\SQL\SQLBundle {
 			switch($ext) {
 				case 'js':
 					Header("content-type: application/x-javascript");
+				break;
 				case 'css':
 					Header("content-type: text/css");
+				break;
+				case 'jpg':
+					Header("content-type: image/jpeg");
+				break;
 				case 'img':
 				break;
 			}
