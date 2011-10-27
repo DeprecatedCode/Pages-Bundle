@@ -8,7 +8,7 @@ class Page extends \Evolution\SQL\Model {
 	
 	
 	public function render($data) {
-		\Evolution\Kernel\Trace::$allow = false;
+		\Evolution\Kernel\Trace::$allow = true;
 		
 		// check to see if this has a scope set and try loading the scope of this page.
 		if($this->scope) {

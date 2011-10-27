@@ -30,7 +30,7 @@ class Bundle extends \Evolution\SQL\SQLBundle {
 		$dir = $dirs[0];
 		$this->portal = $dir;
 		if(isset($path[0]) && $path[0] == 'static') {
-			Trace::$allow = false;
+			Trace::$allow = true;
 			array_shift($path);
 			$file = array_pop($path);
 			$ext = substr($file,strrpos($file,'.'));
@@ -49,19 +49,24 @@ class Bundle extends \Evolution\SQL\SQLBundle {
 		
 		if(!isset($path[0])) $path[0] = 'index';
 		
+		$url = implode('/',$path);
+		
 		// load all the pages to scan for
-		$pages = $this->getPages()->condition('segment', $path[0]);
+		$pages = $this->getPages()->condition('segment', array_shift($path));
+		
+		$slug = array_shift($path);
+		
 		$matches = array();
 		foreach($pages as $page) {
-			if(isset($path[1])) {
-				if($page->matcher == $path[1]) {
-					$matches[] = array('matched' => 'exact', 'key' => $path[1], 'page' => $page);
+			if(!is_null($slug)) {
+				if($page->matcher == $slug) {
+					$matches[] = array('matched' => 'exact', 'key' => $slug, 'page' => $page);
 				}
-				elseif($page->matcher == ':slug' && preg_match("/^[A-Za-z-]+$/", $path[1])) {
-					$matches[] = array('matched' => ':slug', 'key' => $path[1], 'page' => $page);
+				elseif($page->matcher == ':slug' && preg_match("/^[A-Za-z-]+$/", $slug)) {
+					$matches[] = array('matched' => ':slug', 'key' => $slug, 'page' => $page);
 				}
-				elseif($page->matcher == ':id' && preg_match("/^[0-9]+$/", $path[1])) {
-					$matches[] = array('matched' => ':id', 'key' => $path[1], 'page' => $page);
+				elseif($page->matcher == ':id' && preg_match("/^[0-9]+$/", $slug)) {
+					$matches[] = array('matched' => ':id', 'key' => $slug, 'page' => $page);
 				}
 			}
 			elseif($page->matcher == '') {
@@ -69,7 +74,7 @@ class Bundle extends \Evolution\SQL\SQLBundle {
 			}
 		}
 		
-		if(count($matches) > 1) throw new Exception("Multiple Matches for ".implode('/',$path));
+		if(count($matches) > 1) throw new Exception("Multiple Matches for $url");
 		else if(count($matches) == 0) return;
 		else $matches[0]['page']->render($matches[0]);
 		throw new Completion;
