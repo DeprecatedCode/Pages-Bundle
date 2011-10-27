@@ -12,15 +12,23 @@ use Exception;
 
 
 class Bundle extends \Evolution\SQL\SQLBundle {
+	
+	public $portal;
 
 	public function __construct($dir) {
 		Service::bind(array($this, "route"), 'portal:route:pages');
 		parent::__construct($dir);
 	}
 	
+	public function template($theme, $template) {
+		$file = "$this->portal/themes/$theme/template/$template.tpl";
+		return file_get_contents($file);
+	}
+	
 	public function route($path, $dirs) {
 		//echo "<div style='white-space:pre;font-family:andale mono; padding:20px;font-size:12px;'>";
 		$dir = $dirs[0];
+		$this->portal = $dir;
 		if(isset($path[0]) && $path[0] == 'static') {
 			Trace::$allow = false;
 			array_shift($path);
