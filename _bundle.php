@@ -26,16 +26,15 @@ class Bundle extends \Evolution\SQL\SQLBundle {
 			array_shift($path);
 			$file = array_pop($path);
 			$ext = substr($file,strrpos($file,'.'));
-			var_dump($ext);
 			switch($ext) {
-				case 'js':
+				case '.js':
 					Header("content-type: application/x-javascript");
-				case 'css':
+				case '.css':
 					Header("content-type: text/css");
-				case 'img':
+				case '.img':
 				break;
 			}
-			echo file_get_contents($dir."/themes/".implode('/', $path));
+			echo file_get_contents($dir."/themes/".implode('/', $path).'/'.$file);
 			
 			throw new Completion;
 		}
