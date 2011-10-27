@@ -43,19 +43,19 @@ class Bundle extends \Evolution\SQL\SQLBundle {
 		$dir = $dirs[0];
 		$this->portal = $dir;
 		if(isset($path[0]) && $path[0] == 'static') {
-			Trace::$allow = true;
+			Trace::$allow = false;
 			array_shift($path);
 			$file = array_pop($path);
-			$ext = substr($file,strrpos($file,'.'));
+			$ext = substr($file,strrpos($file,'.')+1);
 			switch($ext) {
-				case '.js':
+				case 'js':
 					Header("content-type: application/x-javascript");
-				case '.css':
+				case 'css':
 					Header("content-type: text/css");
-				case '.img':
+				case 'img':
 				break;
 			}
-			echo file_get_contents($dir."/themes/".implode('/', $path).'/'.$file);
+			echo file_get_contents($dir."/themes/".implode('/', $path).'/'.$ext.'/'.$file);
 			
 			throw new Completion;
 		}

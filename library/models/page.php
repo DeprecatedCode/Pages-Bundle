@@ -52,5 +52,4 @@ class Page extends \Evolution\SQL\Model {
 		echo($node->build());
 	}
 	
-	
 }
