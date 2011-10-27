@@ -4,6 +4,8 @@ namespace Evolution\Pages\Models;
 use e;
 use Exception;
 
+class PageScopeException extends Exception { }
+
 class Page extends \Evolution\SQL\Model {
 	
 	
@@ -35,6 +37,8 @@ class Page extends \Evolution\SQL\Model {
 		
 		$html = e::pages()->template($this->theme, $this->template);
 
+		if(!isset($model))
+			throw new PageScopeException("No scope was provided for the page `$this->name` with the ID of `$this->id`");
 
 		$node = \Evolution\LHTML\Parser::parseString($html);
 		$scope = $node->_data();
