@@ -55,7 +55,7 @@ class Bundle extends \Evolution\SQL\SQLBundle {
 				case 'img':
 				break;
 			}
-			echo file_get_contents($dir."/themes/".implode('/', $path).'/'.$ext.'/'.$file);
+			readfile($dir."/themes/".implode('/', $path).'/'.$ext.'/'.$file);
 			
 			throw new Completion;
 		}
