@@ -46,6 +46,9 @@ class Bundle extends \Evolution\SQL\SQLBundle {
 			
 			throw new Completion;
 		}
+		
+		if(!isset($path[0])) $path[0] = 'index';
+		
 		// load all the pages to scan for
 		$pages = $this->getPages()->condition('segment', $path[0]);
 		$matches = array();
@@ -67,6 +70,7 @@ class Bundle extends \Evolution\SQL\SQLBundle {
 		}
 		
 		if(count($matches) > 1) throw new Exception("Multiple Matches for ".implode('/',$path));
+		else if(count($matches) == 0) return;
 		else $matches[0]['page']->render($matches[0]);
 		throw new Completion;
 		// get the first match
