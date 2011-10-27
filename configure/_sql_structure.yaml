@@ -1,0 +1,15 @@
+page:
+	singular: page
+	plural: pages
+	fields:
+		name: string
+		segment: string
+		scope:string
+		matcher: string
+		template: string
+		theme: string
+		map: longtext
+		status: "enum('active', 'inactive', 'review', 'testing')"
+		parent_id:number
+	manyToMany:
+		- members.account
