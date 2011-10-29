@@ -8,6 +8,7 @@ use Evolution\Kernel\Completion;
 use Evolution\Kernel\IncompleteException;
 use Evolution\Kernel\Configure;
 use Evolution\Kernel\Trace;
+use Evolution\Kernel\View;
 use Exception;
 
 
@@ -15,6 +16,11 @@ class Bundle extends \Evolution\SQL\SQLBundle {
 
 	public function __construct($dir) {
 		Service::bind(array($this, "route"), 'portal:route:pages');
+		
+		/**
+		 * Add to manager
+		 */
+		Configure::add('manage.bundle', __NAMESPACE__, 'pages');
 		parent::__construct($dir);
 	}
 	
@@ -65,7 +71,28 @@ class Bundle extends \Evolution\SQL\SQLBundle {
 		// get the complexity of the match
 
 		// check to see if there are multiple matches and return the most complex match, or return the highest priority
-		
 	}
-
+	
+	public function save() {
+		
+		$fields = explode(' ', 'name segment scope matcher template theme map status parent_id');
+		$reqfields = explode(' ', 'name segment template theme status');
+		
+		$ok = true;
+		foreach($reqfields as $field) {
+			if(empty($_POST[$field])) {
+				$ok = false;
+				break;
+			}
+		}
+		
+		if($ok) die('OK');
+		
+		new View(array(
+			'title' => 'Error Saving Page',
+			'body' => '<div class="section"><h1>Invalid '.ucfirst($field).'</h1><div class="error">Please go back and enter a new value for <code>'.ucfirst($field).'</code></div>
+					<div style="padding-top: 30px"><input type="submit" value="Go Back" onclick="javascript:history.go(-1);" /></div>
+				</div>'
+		));
+	}
 }

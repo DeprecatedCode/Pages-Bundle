@@ -11,5 +11,10 @@ page:
 		map: longtext
 		status: "enum('active', 'inactive', 'review', 'testing')"
 		parent_id:number
-	manyToMany:
-		- members.account
+	hasOne:
+		- portal
+portal:
+	singular: portal
+	plural: portals
+	fields:
+		name: string
